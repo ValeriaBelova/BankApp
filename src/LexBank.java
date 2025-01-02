@@ -38,10 +38,71 @@ public class LexBank {
     }
 
 
-
     private static long generateAccountNumber(){
         return accountNumberGenerator++;//generera en ny nästa nummer varje gång
     }
+
+
+    //jag skapar en wrapper-metod för att anropa den privata metoden accountTransfer i main
+    public static void performAccountTransfer(long fromAccount, long toAccount, double amount){
+        if(amount <= 0){ //extra validering för amount
+            System.out.println("Transfer amount should be positive.");
+            return;
+        }
+        //anropar den privata metoden
+        accountTransfer(fromAccount, toAccount, amount);
+    }
+
+    //denna private metod kan jag anropa i main om jag skapar en till metod att skydda denna metod
+    private static void accountTransfer(long fromAccount, long toAccount, double amount) {
+
+        LexAccount fromAcc = LexBank.getAccount(fromAccount);
+        if(fromAcc == null) {
+            System.out.println("The account: " + fromAccount + " doesn't exist.");
+            return; // avsluta om kontot inte hittats
+        }
+
+        LexAccount toAcc = LexBank.getAccount(toAccount);
+        if(toAcc == null) {
+            outputMessage("The account: " + toAccount + " doesn't exist.");
+            return; // avsluta om kontot inte hittats
+        }
+
+        if(fromAcc.getSaldo() < amount) {
+            outputMessage("There is not enough money on the account " + fromAcc.getName());
+            return;
+        }
+
+        try{
+            fromAcc.withdraw(amount);
+            toAcc.deposit(amount);
+
+            //skriver ut success meddelanden
+            System.out.println("The transfer of " + amount + " from account " + fromAccount + " to account" + toAccount + "was successful.");
+            System.out.println("The remaining saldo on the account: " + fromAccount + " is " + fromAcc.getSaldo());
+            System.out.println("Updated saldo on account: " + toAccount + " is " + toAcc.getSaldo());
+        } catch (Exception e) {
+            System.out.println("The transfer failed due to an unexpected error: " + e.getMessage());
+        }
+    }
+
+
+        //all denna kod nedanför kan man enkelt ersätta med 2 rader ovanför, för att jag har getAccount metod! smidigt! undviker upprepningar
+        /*for(LexAccount accountFrom : accounts){
+            if(accountFrom.getAccountNumber() == fromAccount) {
+                return accountFrom;
+            }
+        }
+        System.out.println("Account with the number: " + fromAccount + " is not found");
+        return null;
+
+        for(LexAccount accountTo : accounts){
+            if(accountTo.getAccountNumber() == toAccount){
+                return accountTo;
+            }
+        }
+        System.out.println("Account with the number: " + toAccount + " is not found");
+        return null;*/
 
 
     public static void outputMessage (String msg) {

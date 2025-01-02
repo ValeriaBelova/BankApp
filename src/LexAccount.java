@@ -42,6 +42,7 @@ public class LexAccount {
         return accountNumber;
     }
 
+
     public LexAccount(long accountNumber){
         this.accountNumber = accountNumber;
     }

@@ -25,6 +25,10 @@ public class Main {
             System.out.println("FAIL: " + e.getMessage());
         }
 
+
+        LexBank.performAccountTransfer(1,2,39);
+
+
         LexBank.printReport();
 
     }
