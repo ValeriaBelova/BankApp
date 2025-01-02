@@ -2,6 +2,7 @@ public class LexAccount {
 //representerar ett enskilt bankkonto
     private String name; //göra private (inkapsling) att skydda data från att ändras direkt utan att gå via metoder!
     private double saldo;
+    long accountNumber;
 
     /**
      * Standard konstruktor
@@ -28,6 +29,21 @@ public class LexAccount {
         this.name = name;
         this.saldo = saldo;
         statusMessage("Created successfully");
+    }
+
+    // Konstruktor som tar emot både namn och kontonummer
+    public LexAccount(String name, long accountNumber) {
+        this.name = name;
+        this.accountNumber = accountNumber;
+        this.saldo = 0.0;
+    }
+
+    public long getAccountNumber() { //kontonummer kan inte ändras efter skapandet av kontot och därför lägger vi inte setter, bara getter
+        return accountNumber;
+    }
+
+    public LexAccount(long accountNumber){
+        this.accountNumber = accountNumber;
     }
 
     public String getName() {
@@ -57,7 +73,7 @@ public class LexAccount {
             return; //använder return här för tidig avslutning om ett ogiltigt tillstånd upptäcks! det är bästa practices!
         }
         saldo = saldo + input; //alternativ saldo += input;
-        System.out.println("Your updated amount on the account is: " + saldo);
+        System.out.println("Your amount on the account is: " + saldo);
         statusMessage("Deposit of " + input + " is done successfully."); //använder egen metod här, bra
     }
 
@@ -78,7 +94,7 @@ public class LexAccount {
             saldo = saldo - output; //alternativ saldo -= output;
             System.out.println("You take out: " + output);
             System.out.println("The remaining saldo is: " + saldo);
-            statusMessage("Withdrawal of " + output + "successful.");
+            statusMessage("Withdrawal of " + output + " successful.");
     }
 
     public void statusMessage(String msg) { //användning av denna metod: Anropa statusMessage varje gång något i kontot förändras eller användaren behöver informeras
